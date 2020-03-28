@@ -14,7 +14,7 @@ mongoose.connect(process.env.DB_CONNECT, {
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:8080' }));
+app.use(cors({ origin: process.env.LOCAL_CLIENT }));
 app.use(express.json());
 app.use(routes);
 
