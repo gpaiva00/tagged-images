@@ -3,7 +3,7 @@
     <v-col cols="12">
       <v-combobox
         @change="handleTagsChange"
-        v-model="select"
+        v-model="selected"
         :items="items"
         :placeholder="placeholder"
         :prepend-inner-icon="innerIcon"
@@ -41,22 +41,20 @@ export default {
     },
     clearFields: Boolean,
   },
-  mounted() {
+  updated() {
     this.load();
   },
-  data() {
-    return {
-      select: [],
-      items: [],
-    };
-  },
+  data: () => ({
+    selected: [],
+    items: [],
+  }),
   watch: {
     'clearFields': function (value) {
-      if (value) this.select = [];
+      if (value) this.selected = [];
     },
     'imageTags': function (value) {
       if (value.length) {
-        this.select = value;
+        this.selected = value;
       }
     },
   },
@@ -65,11 +63,10 @@ export default {
       this.getTags();
     },
     getTags() {
-      const storedTags = this.$store.state.tags.map(tag => tag.text);
-      this.items = storedTags;
+      this.items = this.$store.state.tags;
     },
     handleTagsChange() {
-      this.$emit('handleTagsInput', this.select);
+      this.$emit('handleTagsInput', this.selected);
     },
   },
 };

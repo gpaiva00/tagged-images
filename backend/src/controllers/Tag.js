@@ -15,7 +15,7 @@ export default {
 
     try {
       await Tag.create(tags);
-      return res.status(204).send();
+      return res.send(tags);
 
     } catch (error) {
       return res
