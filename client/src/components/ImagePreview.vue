@@ -1,12 +1,14 @@
 <template>
   <v-container v-if="src.length" fluid>
     <v-row justify="center">
-      <v-col cols="6" v-for="(image, index) in src" :key="index">
+      <v-col :cols="src.length <= 1 ? '12' : '4'" >
         <v-img
-          :src="image"
-          :width="width"
-        >
-        </v-img>
+          v-for="(image, index) in  src"
+          :key="index"
+          :src="image.image.url"
+          :lazy-src="image.thumb.url"
+          style="max-width: 430px;"
+        ></v-img>
       </v-col>
     </v-row>
   </v-container>
@@ -16,8 +18,14 @@
 export default {
   props: {
     src: {
-      type: Array,
-      default: () => [],
+      image: {
+        type: Object,
+        default: () => {},
+      },
+      thumb: {
+        type: Object,
+        default: () => {},
+      },
     },
     width: {
       type: Number,

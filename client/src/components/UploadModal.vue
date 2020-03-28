@@ -85,11 +85,10 @@ export default {
           const {
             id, image, thumb, delete_url,
           } = response.data.data;
-          const previewUrl = thumb.url;
 
           // eslint-disable-next-line object-curly-newline
           this.uploadedImages.push({ id, image, thumb, delete_url });
-          this.previewUrl.push(previewUrl);
+          this.previewUrl.push({ image, thumb });
           this.loadingPreview = false;
         })
         .catch(() => {

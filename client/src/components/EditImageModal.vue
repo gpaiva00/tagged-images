@@ -4,7 +4,7 @@
       <v-card>
          <v-card-text>
             <!-- preview -->
-            <image-preview :src="previewUrl" :width="250"/>
+            <image-preview :src="previewUrl"/>
             <!-- tags -->
             <tags-input
               :imageTags="tags"
@@ -153,9 +153,8 @@ export default {
           .join(' '));
     },
     previewUrl() {
-      const { image: { thumb: { url = '' } } } = this.image;
-
-      return [url];
+      const { image: { image, thumb } } = this.image;
+      return [{ image, thumb }];
     },
     tags() {
       const { tags } = this.image;

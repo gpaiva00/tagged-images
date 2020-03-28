@@ -8,7 +8,8 @@
         class="img-box">
         <img
           :class="{ selected: image.selected === true }"
-          :src="image.image.image.url" />
+          :src="image.image.image.url"
+          :lazy-src="image.image.thumb.url" />
         <div class="transparent-box">
           <div class="caption">
             <v-chip
