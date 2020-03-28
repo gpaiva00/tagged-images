@@ -2,8 +2,14 @@ import Image from '@models/Image';
 
 export default {
   async index(req, res) {
-    const images = await Image.find().sort('-updatedAt');
+    const { page = 1 } = req.query;
+    const skip = (page - 1) * 10;
     const count = await Image.count();
+    const images = await Image
+      .find()
+      .sort('-updatedAt')
+      .limit(10)
+      .skip(skip);
 
     res.header('X-Total-Count', count);
     return res.send(images);
