@@ -172,13 +172,20 @@ export default {
   },
   computed: {
     imageTagsComputed() {
-      // capitalizes tag text
-      return this.imageTags
-        .map(tag => tag
-          .toLowerCase()
-          .split(' ')
-          .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-          .join(' '));
+      try {
+        // capitalizes tag text
+        return this.imageTags
+          .map(tag => tag
+            .toLowerCase()
+            .split(' ')
+            .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+            .join(' '));
+      } catch (error) {
+        return this.$toggleNotification({
+          text: 'Desculpe, houve um erro ao tentar salvar. Tente novamente.',
+          color: 'error',
+        });
+      }
     },
   },
   watch: {
