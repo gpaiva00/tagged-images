@@ -36,12 +36,13 @@
 </template>
 
 <script>
-import axios from 'axios';
 import UploadModal from '../components/UploadModal.vue';
 import SearchField from '../components/SearchField.vue';
 import Gallery from '../components/Gallery.vue';
 import PresentationPreview from '../components/PresentationPreview.vue';
 import AppMenu from '../components/AppMenu.vue';
+import TagsAPI from '../API/Tags';
+import GalleryAPI from '../API/Gallery';
 
 export default {
   name: 'Home',
@@ -69,23 +70,16 @@ export default {
   methods: {
     load() {
       this.getGalleryImages();
-      this.fetchTags();
+      this.getTags();
     },
-    fetchTags() {
-      const apiUrl = `${process.env.VUE_APP_JSON_API}/tags?limit=1000`;
-
-      axios
-        .get(apiUrl)
-        .then((res) => {
-          const tags = res.data.map(({ text }) => ({ text }));
-          this.$store.dispatch('settingTags', tags);
-        });
+    getTags() {
+      TagsAPI.list().then((response) => {
+        const tags = response.data.map(({ text }) => ({ text }));
+        this.$store.dispatch('settingTags', tags);
+      });
     },
     getGalleryImages() {
-      const apiUrl = `${process.env.VUE_APP_JSON_API}/images`;
-
-      axios
-        .get(apiUrl)
+      GalleryAPI.list()
         .then((response) => {
           this.galleryImages = response.data;
           this.filteredImages = response.data;
