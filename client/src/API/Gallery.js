@@ -3,8 +3,8 @@ import axios from 'axios';
 const apiUrl = `${process.env.VUE_APP_JSON_API}/images`;
 
 export default {
-  async list() {
-    return axios.get(apiUrl);
+  async list(page = 1) {
+    return axios.get(`${apiUrl}?page=${page}`);
   },
 
   async upload(data) {

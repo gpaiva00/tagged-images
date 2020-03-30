@@ -78,17 +78,19 @@ export default {
         this.$store.dispatch('settingTags', tags);
       });
     },
+    fetchGalleryImages() {
+      return GalleryAPI.list(this.galleryPage)
+        .then(response => response.data)
+        .catch(() => this.$toggleNotification({
+          text: 'Desculpe, houve um erro ao tentar buscar a galeria.',
+          color: 'error',
+        }));
+    },
     getGalleryImages() {
-      GalleryAPI.list()
+      this.fetchGalleryImages()
         .then((response) => {
-          this.galleryImages = response.data;
-          this.filteredImages = response.data;
-        })
-        .catch(() => {
-          this.$toggleNotification({
-            text: 'Desculpe, houve um erro ao tentar buscar a galeria.',
-            color: 'error',
-          });
+          this.galleryImages = response;
+          this.filteredImages = response;
         });
     },
     handleClickImage(image) {
