@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { View } from 'react-native';
+
+import Header from '../../components/Header';
+import ChipList from '../../components/ChipList';
+import ImagesList from '../../components/ImagesList';
 
 import api  from '../../services/api';
 
@@ -9,6 +12,8 @@ import styles from './styles';
 export default function Home() {
   const [images, setImages] = useState([]);
   const [tags, setTags] = useState([]);
+  const [tagsFilter, setTagsFilter] = useState([]);
+  const [showTags, setShowTags] = useState(false);
   const [total, setTotal] = useState(0);
   
   const [page, setPage] = useState(1);
@@ -37,7 +42,9 @@ export default function Home() {
     setTags(response.data);
   }
 
-  function handleTagPress(text) {}
+  function handleSearchPress() {
+    // setShowTags(true);
+  }
 
   useEffect(() => {
     loadImages();
@@ -46,40 +53,14 @@ export default function Home() {
 
   return (
     <>
-      <View style={styles.header}>
-        <MaterialIcons name="image" size={28} style={styles.headerIcon}></MaterialIcons>
-        <Text style={styles.headerTitle}>Imagens</Text>
-      </View>
+      <Header handleSearchPress={handleSearchPress} />
 
-      <View style={styles.chipsList}>
-        <FlatList
-          data={tags}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => String(item._id)}
-          renderItem={({ item: tag }) => (
-            <TouchableOpacity onPress={() => handleTagPress(tag.text)} style={styles.chip}>
-              <Text style={styles.chipText}>{tag.text}</Text>
-            </TouchableOpacity>
-          )} />
-      </View>
+      <ChipList tags={tags} showTags={showTags}/>
       
       <View style={styles.container}>
-        <FlatList 
-          data={images}
-          keyExtractor={(item) => String(item._id)}
-          showsHorizontalScrollIndicator={false}
-          onEndReached={loadImages}
-          onEndReachedThreshold={0.2}
-          renderItem={({ item: image }) => (
-            <Image
-              style={styles.image}
-              source={{ uri: image.image.image.url }}
-              resizeMode='stretch'
-            />
-          )}
-        />
-      
+        
+        <ImagesList images={images} loadImages={loadImages}/>
+
         {/* <View style={styles.bottomNav}>
           <TouchableOpacity onPress={() => {}} style={styles.navButton}>
             <MaterialIcons name="home" size={28}></MaterialIcons>

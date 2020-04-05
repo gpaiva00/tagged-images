@@ -2,14 +2,19 @@ import Image from '@models/Image';
 
 export default {
   async index(req, res) {
-    const { page = 1 } = req.query;
-    const skip = (page - 1) * 12;
-    const count = await Image.count();
+    const { page = 1, tags = [] } = req.query;
+    const skip = (page - 1) * 5;
+    let filter = {};
+    
+    filter = tags.length ? { tags: { $in: tags.split(',') } } : {};
+    
     const images = await Image
-      .find()
-      .sort('-updatedAt')
-      .limit(12)
-      .skip(skip);
+    .find(filter)
+    .sort('-updatedAt')
+    .limit(5)
+    .skip(skip);
+    
+    const count = images.length;
 
     res.header('X-Total-Count', count);
     return res.send(images);
