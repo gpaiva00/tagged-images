@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import styles from './styles';
 
-export default function Header({ handleSearchPress }) {
-  // const [showSearchField, setShowSearchField] = useState(false);
-
+export default function Default({ handleSearchPress }) {
   return (
     <View style={styles.header}>
       <View style={styles.headerPageContent}>

@@ -3,6 +3,9 @@ import Constants from 'expo-constants';
 
 export default StyleSheet.create({
   header: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
     paddingTop: Constants.statusBarHeight + 20,
     backgroundColor: '#be79df',
     flexDirection: 'row',

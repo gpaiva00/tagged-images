@@ -42,10 +42,6 @@ export default function Home() {
     setTags(response.data);
   }
 
-  function handleSearchPress() {
-    // setShowTags(true);
-  }
-
   useEffect(() => {
     loadImages();
     loadTags();
@@ -53,28 +49,13 @@ export default function Home() {
 
   return (
     <>
-      <Header handleSearchPress={handleSearchPress} />
-
       <ChipList tags={tags} showTags={showTags}/>
       
       <View style={styles.container}>
-        
         <ImagesList images={images} loadImages={loadImages}/>
-
-        {/* <View style={styles.bottomNav}>
-          <TouchableOpacity onPress={() => {}} style={styles.navButton}>
-            <MaterialIcons name="home" size={28}></MaterialIcons>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => {}} style={styles.navButton}>
-            <MaterialIcons name="search" size={28}></MaterialIcons>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => {}} style={styles.navButton}>
-            <MaterialIcons name="add" size={28}></MaterialIcons>
-          </TouchableOpacity>
-        </View> */}
       </View>
+
+      <Header />
     </>
   );
 }

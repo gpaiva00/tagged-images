@@ -3,6 +3,9 @@ import Constants from 'expo-constants';
 
 export default StyleSheet.create({
   header: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
     paddingTop: Constants.statusBarHeight + 20,
     backgroundColor: '#be79df',
     flexDirection: 'row',
@@ -34,5 +37,19 @@ export default StyleSheet.create({
     width: '70%',
     backgroundColor: '#fff',
     borderRadius: 50,
+  },
+
+  autocompleteContainer: {
+    flex: 1,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 999
+  },
+
+  itemText: {
+    fontSize: 15,
+    margin: 2
   },
 });
