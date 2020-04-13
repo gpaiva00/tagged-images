@@ -4,9 +4,10 @@ export default {
   async index(req, res) {
     const { page = 1, tags = [] } = req.query;
     const skip = (page - 1) * 5;
+    const isFiltering = tags.length;
     let filter = {};
     
-    filter = tags.length ? { tags: { $in: tags.split(',') } } : {};
+    filter = isFiltering ? { tags: { $in: tags.split(',') } } : {};
     
     const images = await Image
     .find(filter)
@@ -14,7 +15,9 @@ export default {
     .limit(5)
     .skip(skip);
     
-    const count = images.length;
+    const count = isFiltering 
+      ? images.length 
+      : await Image.count();
 
     res.header('X-Total-Count', count);
     return res.send(images);

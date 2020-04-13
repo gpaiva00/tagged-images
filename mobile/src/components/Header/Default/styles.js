@@ -3,11 +3,11 @@ import Constants from 'expo-constants';
 
 export default StyleSheet.create({
   header: {
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-    paddingTop: Constants.statusBarHeight + 20,
-    backgroundColor: '#be79df',
+    // position: 'absolute',
+    // top: 0,
+    // width: '100%',
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#7159c1',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

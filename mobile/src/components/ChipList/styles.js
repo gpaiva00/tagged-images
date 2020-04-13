@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   chipsList: {
-    paddingVertical: 20,
+    paddingVertical: 15,
     borderBottomWidth: 2,
     borderBottomColor: '#dbdbdb'
   },

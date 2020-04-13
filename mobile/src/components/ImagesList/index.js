@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, Image } from 'react-native';
+import { FlatList, Text, View, Image } from 'react-native';
 
 import styles from './styles';
 
@@ -7,11 +7,11 @@ export default function ImagesList({ images, loadImages }) {
   return (
     <FlatList 
       data={images}
-      style={{ paddingTop: 10 }}
       keyExtractor={(item) => String(item._id)}
       showsHorizontalScrollIndicator={false}
       onEndReached={loadImages}
       onEndReachedThreshold={0.2}
+      initialNumToRender={5}
       renderItem={({ item: image }) => (
         <Image
           style={styles.image}
@@ -19,6 +19,11 @@ export default function ImagesList({ images, loadImages }) {
           resizeMode='stretch'
         />
       )}
+      ListEmptyComponent={
+        <View style={styles.container}>
+          <Text style={styles.noText}>Nenhuma imagem encontrada</Text>
+        </View>
+      }
     />
   );
 }

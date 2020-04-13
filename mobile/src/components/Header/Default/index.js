@@ -17,11 +17,11 @@ export default function Default({ handleSearchPress }) {
         <Text style={styles.headerTitle}>Imagens</Text>
       </View>
       
-      <View style={styles.headerOptionsContent}>
+      {/* <View style={styles.headerOptionsContent}>
         <TouchableOpacity onPress={handleSearchPress} style={styles.headerSearchButton}>
           <MaterialIcons name='search' size={28} style={styles.headerIcons}></MaterialIcons>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 }
