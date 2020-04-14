@@ -9,15 +9,21 @@ export default StyleSheet.create({
 
   chip: {
     padding: 10,
-    // backgroundColor: '#c873fa',
     backgroundColor: '#dbdbdb',
     borderRadius: 50,
     marginHorizontal: 5,
   },
 
+  activeChip: {
+    backgroundColor: '#7159c1',
+  },
+
   chipText: {
-    // color: '#fff'
     color: '#636262',
     fontSize: 12,
+  },
+
+  activeChipText: {
+    color: '#fff',
   },
 });

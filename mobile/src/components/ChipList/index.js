@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableHighlight, FlatList } from 'react-native';
 
 import styles from './styles';
 
@@ -12,9 +12,14 @@ export default function ChipList({ tags, handleTagPress }) {
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => String(item._id)}
         renderItem={({ item: tag }) => (
-          <TouchableOpacity onPress={() => handleTagPress(tag.text)} style={styles.chip}>
-            <Text style={styles.chipText}>{tag.text}</Text>
-          </TouchableOpacity>
+          <TouchableHighlight
+            style={[ styles.chip, tag.active && styles.activeChip ]}
+            underlayColor='#7159c1'
+            onPress={() => handleTagPress(tag.text)}>
+            <Text style={[ styles.chipText, tag.active && styles.activeChipText ]}>
+              {tag.text}
+            </Text>
+          </TouchableHighlight>
         )} />
     </View>
   );

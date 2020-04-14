@@ -11,12 +11,13 @@ export default function ImagesList({ images, loadImages }) {
       showsHorizontalScrollIndicator={false}
       onEndReached={loadImages}
       onEndReachedThreshold={0.2}
-      initialNumToRender={5}
+      windowSize={5}
       renderItem={({ item: image }) => (
         <Image
           style={styles.image}
           source={{ uri: image.image.image.url }}
           resizeMode='stretch'
+          
         />
       )}
       ListEmptyComponent={

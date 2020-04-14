@@ -30,14 +30,19 @@ export default function Home() {
       params: { page, tags: tagsFilter }
     });
 
-    console.log({ 
-      total: response.headers['x-total-count'], 
-      page, 
-      images: response.data.length,
-      isFiltering 
-    });
+    // console.log({ 
+    //   total: response.headers['x-total-count'], 
+    //   page, 
+    //   images: images.length,
+    //   isFiltering 
+    // });
 
-    const imagesResult = isFiltering ? [] : images;
+    let imagesResult = images;
+
+    if (isFiltering) {
+      imagesResult = [];
+      setIsFiltering(false);
+    }
 
     setImages([...imagesResult,...response.data]);
     setTotal(Number(response.headers['x-total-count']));
@@ -52,20 +57,33 @@ export default function Home() {
   }
 
   function handleTagPress(text) {
-    let myTags = JSON.parse(JSON.stringify(tagsFilter));
+    let newTagsFilter = JSON.parse(JSON.stringify(tagsFilter));
+    let newTagsState = [...tags]; 
     // turns into array of tags
-    myTags = myTags.split(',');
+    newTagsFilter = newTagsFilter.split(',');
     
-    const tagIndex = myTags.findIndex(tag => tag === text);
+    const tagFilterIndex = newTagsFilter.findIndex(tag => tag === text);
+    const tagIndex = newTagsState.findIndex(tag => tag.text === text);
+    const { active = false } = newTagsState[tagIndex];
+    // toggle color prop
+    newTagsState[tagIndex] = { 
+      ...tags[tagIndex], 
+      active: !active
+    };
+
+    console.log(newTagsState[tagIndex]);
+    
+    
     // toggle tag on array
-    if (tagIndex === -1) myTags = [...myTags, text]
-    else myTags.splice(tagIndex, 1);
-    // remove empty tags
-    myTags = myTags.filter(tag => tag !== '');
+    if (tagFilterIndex === -1) newTagsFilter = [...newTagsFilter, text]
+    else newTagsFilter.splice(tagFilterIndex, 1);
     
-    setTagsFilter(myTags.join(','));
+    // remove empty tags
+    newTagsFilter = newTagsFilter.filter(tag => tag !== '');
+    
+    setTagsFilter(newTagsFilter.join(','));
+    setTags(newTagsState);
     setTotal(0);
-    // setImages([]);
     setIsFiltering(true);
     setPage(1);
     setLoading(false);
