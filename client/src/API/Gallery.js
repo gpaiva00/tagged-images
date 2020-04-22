@@ -8,17 +8,7 @@ export default {
   },
 
   async upload(data) {
-    const uploadAPI = process.env.VUE_APP_UPLOAD_API;
-    const uploadKey = process.env.VUE_APP_UPLOAD_KEY;
-    const uploadUrl = `${uploadAPI}?key=${uploadKey}`;
-    const headers = { 'Content-Type': 'multipart/form-data' };
-
-    return axios({
-      method: 'POST',
-      url: uploadUrl,
-      headers,
-      data,
-    });
+    return axios.post(`${apiUrl}/upload`, { data });
   },
 
   async create(requestBody) {

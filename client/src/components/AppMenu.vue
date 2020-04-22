@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="#5F4E5F" dark app elevate-on-scroll >
+  <v-app-bar color="#7261A3" dark app elevate-on-scroll >
         <v-icon>mdi-tooltip-image</v-icon>
       <v-toolbar-title class="headline text-uppercase">
         <span class="mx-2">Images</span>
@@ -52,7 +52,7 @@
               icon
               large
               class="ml-5"
-              :color="togglePresentationPreview ? 'error' : ''"
+              :color="togglePresentationPreview ? '#F797D6' : ''"
               @click="() => $emit('presentationButton')"
               v-on="on"
             >

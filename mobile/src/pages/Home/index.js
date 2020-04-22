@@ -70,9 +70,6 @@ export default function Home() {
       ...tags[tagIndex], 
       active: !active
     };
-
-    console.log(newTagsState[tagIndex]);
-    
     
     // toggle tag on array
     if (tagFilterIndex === -1) newTagsFilter = [...newTagsFilter, text]
