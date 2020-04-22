@@ -17,6 +17,7 @@ export default function Home() {
   const [tagsFilter, setTagsFilter] = useState('');
   const [total, setTotal] = useState(0);
   const [selectedImagesTotal, setSelectedImagesTotal] = useState(0);
+  const [selectedImages, setSelectedImages] = useState([]);
   const [page, setPage] = useState(1);
   const [isFiltering, setIsFiltering] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -85,10 +86,49 @@ export default function Home() {
     setLoading(false);
   }
 
+  function handleImagePress({ image }) {
+    if (!isCreatingPresentation) return;
+
+    // console.log({ image });
+    let newSelectedImages = [...selectedImages];
+    let newImages = [...images];
+
+    /**
+     * Set prop 'selected' to images array
+     */
+    const imageIndex = newImages.findIndex(img => img._id === image._id);
+    const { selected = false } = newImages[imageIndex];
+
+    newImages[imageIndex] = {
+      ...images[imageIndex],
+      selected: !selected
+    }
+    
+    /**
+     * Toggle selected images array
+     */
+    const selectedImageIndex = newSelectedImages.findIndex(selectedImage => 
+      selectedImage._id === image._id);
+    
+    if (selectedImageIndex === -1) newSelectedImages = [...newSelectedImages, image];
+    else newSelectedImages.splice(selectedImageIndex, 1); 
+
+    const total = newSelectedImages.length
+
+    console.log(total);
+    
+    setSelectedImages(newSelectedImages);
+    setImages(newImages);
+    setSelectedImagesTotal(total);
+  }
+
   function handleCreatePresentation() {
     setIsCreatingPresentation(true);
   }
+
   function handleCancelPresentation() {
+    setSelectedImages([]);
+    setSelectedImagesTotal(0);
     setIsCreatingPresentation(false);
   }
 
@@ -114,7 +154,11 @@ export default function Home() {
         
         <ChipList tags={tags} handleTagPress={handleTagPress}/>
         
-        <ImagesList images={images} loadImages={loadImages}/>
+        <ImagesList
+          images={images} 
+          loadImages={loadImages}
+          handleImagePress={handleImagePress}
+        />
 
         <PresentationPreview 
           totalImages={selectedImagesTotal}

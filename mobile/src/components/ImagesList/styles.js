@@ -10,11 +10,19 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  
   noText: {
     fontSize: 15
   },
+  
   image: {
     width: imageWidth,
     height: imageHeight,
   },
+
+  checkIcon: {
+    color: '#2fc247'
+  },
+
+  selected: {},
 });

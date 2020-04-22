@@ -7,15 +7,15 @@ import styles from  './styles';
 export default function PresentationPreview({ totalImages, isCreatingPresentation }) {
 
   function renderContent() {
-    if (!totalImages.length)
+    if (totalImages === 0)
      return (
       <View style={styles.noContentView}>
         <Text>Selecione as imagens</Text>
       </View>
      );
-
+    
     return (
-      <View style={styles.previewView}>
+      <View style={styles.previewContainer}>
         <Text>{totalImages} imagens</Text>
         
         <TouchableOpacity
