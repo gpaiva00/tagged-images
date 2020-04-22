@@ -4,6 +4,7 @@ import { View, StatusBar } from 'react-native';
 import Header from '../../components/Header';
 import ChipList from '../../components/ChipList';
 import ImagesList from '../../components/ImagesList';
+import PresentationPreview from '../../components/PresentationPreview';
 import Loader from '../../components/Loader';
 
 import api  from '../../services/api';
@@ -15,6 +16,7 @@ export default function Home() {
   const [tags, setTags] = useState([]);
   const [tagsFilter, setTagsFilter] = useState('');
   const [total, setTotal] = useState(0);
+  const [selectedImagesTotal, setSelectedImagesTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [isFiltering, setIsFiltering] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -109,8 +111,14 @@ export default function Home() {
     
       <View style={styles.container}>
         <Loader loading={loading} />
+        
         <ChipList tags={tags} handleTagPress={handleTagPress}/>
+        
         <ImagesList images={images} loadImages={loadImages}/>
+
+        <PresentationPreview 
+          totalImages={selectedImagesTotal}
+          isCreatingPresentation={isCreatingPresentation}/>
       </View>
     </>
   );
