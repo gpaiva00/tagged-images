@@ -29,6 +29,7 @@ export default function Home() {
     const response = await api.get('images', {
       params: { page, tags: tagsFilter }
     });
+    
 
     let imagesResult = images;
 
@@ -52,12 +53,14 @@ export default function Home() {
   function handleTagPress(text) {
     let newTagsFilter = JSON.parse(JSON.stringify(tagsFilter));
     let newTagsState = [...tags]; 
+    
     // turns into array of tags
     newTagsFilter = newTagsFilter.split(',');
     
     const tagFilterIndex = newTagsFilter.findIndex(tag => tag === text);
     const tagIndex = newTagsState.findIndex(tag => tag.text === text);
     const { active = false } = newTagsState[tagIndex];
+    
     // toggle color prop
     newTagsState[tagIndex] = { 
       ...tags[tagIndex], 
