@@ -21,7 +21,13 @@ export default StyleSheet.create({
   },
 
   checkIcon: {
-    color: '#2fc247'
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // color: '#2fc247'
+    color: '#000'
   },
 
   selected: {},

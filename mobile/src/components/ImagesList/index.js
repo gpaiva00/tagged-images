@@ -9,7 +9,7 @@ export default function ImagesList({ images, loadImages, handleImagePress }) {
     return (
       <MaterialIcons
         name='check-circle'
-        size={30}
+        size={35}
         style={styles.checkIcon}
       ></MaterialIcons>
     );
