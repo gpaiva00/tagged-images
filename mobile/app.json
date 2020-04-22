@@ -1,19 +1,19 @@
 {
   "expo": {
     "name": "Tagged Images",
-    "slug": "taggedimages",
+    "slug": "pesquisa_de_imagens_por_tags",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#7159c1"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,6 +23,10 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.jwi.taggedImages",
+      "versionCode": 1
     }
   }
 }

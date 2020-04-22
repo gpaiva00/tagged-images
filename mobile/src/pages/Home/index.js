@@ -30,13 +30,6 @@ export default function Home() {
       params: { page, tags: tagsFilter }
     });
 
-    // console.log({ 
-    //   total: response.headers['x-total-count'], 
-    //   page, 
-    //   images: images.length,
-    //   isFiltering 
-    // });
-
     let imagesResult = images;
 
     if (isFiltering) {
