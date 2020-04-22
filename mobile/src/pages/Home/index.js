@@ -18,6 +18,7 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [isFiltering, setIsFiltering] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isCreatingPresentation, setIsCreatingPresentation] = useState(false);
 
   async function loadImages() {
     if (loading) return;
@@ -82,6 +83,13 @@ export default function Home() {
     setLoading(false);
   }
 
+  function handleCreatePresentation() {
+    setIsCreatingPresentation(true);
+  }
+  function handleCancelPresentation() {
+    setIsCreatingPresentation(false);
+  }
+
   useEffect(() => {
     loadImages();
   }, [tagsFilter]);
@@ -94,7 +102,10 @@ export default function Home() {
     <>
       <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
 
-      <Header />
+      <Header 
+        isCreatingPresentation={isCreatingPresentation}
+        handleCreatePresentation={handleCreatePresentation}
+        handleCancelPresentation={handleCancelPresentation}/>
     
       <View style={styles.container}>
         <Loader loading={loading} />

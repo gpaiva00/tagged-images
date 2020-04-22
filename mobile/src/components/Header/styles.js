@@ -22,12 +22,20 @@ export default StyleSheet.create({
     color: '#fff',
   },
 
+  cancelIcon: {
+    color: '#f76554'
+  },
+
   headerPageIcon: {
     marginStart: 10,
   },
 
-  headerSearchButton: {
+  headerButtons: {
     paddingHorizontal: 10,
+  },
+
+  headerOptionsContent: {
+    flexDirection: "row"
   },
 
   headerTitle: {

@@ -4,13 +4,30 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import styles from './styles';
 
-export default function Default() {
+export default function Default({ 
+  isCreatingPresentation, handleCreatePresentation, handleCancelPresentation 
+}) {
 
-  function handleCreatePresentation() {
-
+  function renderTogglePresentationButton() {
+    if (!isCreatingPresentation) 
+     return (
+      <TouchableOpacity
+        onPress={handleCreatePresentation}
+        style={styles.headerButtons}
+      >
+        <MaterialIcons name='slideshow' size={28} style={styles.headerIcons}></MaterialIcons>
+      </TouchableOpacity>
+     );
+    
+     return (
+      <TouchableOpacity
+        onPress={handleCancelPresentation}
+        style={styles.headerButtons}
+      >
+        <MaterialIcons name='cancel' size={28} style={styles.cancelIcon}></MaterialIcons>
+      </TouchableOpacity>
+    );
   }
-
-  function handleCancelPresentation() {}
 
   return (
     <View style={styles.header}>
@@ -25,12 +42,7 @@ export default function Default() {
       </View>
       
       <View style={styles.headerOptionsContent}>
-        <TouchableOpacity
-          onPress={handleCreatePresentation}
-          style={styles.headerSearchButton}
-        >
-          <MaterialIcons name='slideshow' size={28} style={styles.headerIcons}></MaterialIcons>
-        </TouchableOpacity>
+        {renderTogglePresentationButton()}
       </View>
     </View>
   );
