@@ -127,6 +127,14 @@ export default function Home() {
   }
 
   function handleCancelPresentation() {
+    // deselect images
+    const newImages = images.map(image => {
+      (image || {}).selected = false;
+
+      return image;
+    });
+    
+    setImages(newImages);
     setSelectedImages([]);
     setSelectedImagesTotal(0);
     setIsCreatingPresentation(false);
