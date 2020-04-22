@@ -1,6 +1,6 @@
-import Tag from '@models/Tag';
+const Tag = require('../database/models/Tag');
 
-export default {
+module.exports = {
   async index(req, res) {
     const tags = await Tag.find().sort('text');
     const count = await Tag.count();

@@ -1,8 +1,8 @@
-import express from 'express';
-import cors from 'cors';
-import routes from './routes';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+const express = require('express');
+const cors = require('cors');
+const routes = require('./routes');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -19,4 +19,4 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-app.listen(3333);
+app.listen(process.env.PORT || 3333);
