@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, StatusBar } from 'react-native';
+import { View, StatusBar } from 'react-native';
 
 import Header from '../../components/Header';
 import ChipList from '../../components/ChipList';

@@ -16,7 +16,7 @@ module.exports = {
     .skip(skip);
     
     const count = isFiltering 
-      ? images.length 
+      ? await Image.find(filter).count()
       : await Image.count();
 
     res.header('X-Total-Count', count);
