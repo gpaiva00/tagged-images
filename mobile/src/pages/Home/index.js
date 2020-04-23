@@ -159,7 +159,8 @@ export default function Home() {
       setLoading(true);
       
       const { data: fileName } = await uploadSelectedImages(selectedImages);
-      const apiUrl = 'http://10.0.0.109:3333';
+      // const apiUrl = 'http://10.0.0.109:3333';
+      const apiUrl = 'https://tagged-images.herokuapp.com';
       
       const fileUri = documentDirectory + fileName;
       const url = `${apiUrl}/download/${fileName}`;
