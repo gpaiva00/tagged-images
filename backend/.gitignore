@@ -7,4 +7,5 @@ node_modules
 
 yarn.lock
 
-tmp
+tmp/*.*
+!tmp/.gitkeep
