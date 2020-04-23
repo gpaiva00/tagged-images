@@ -9,7 +9,7 @@ export default function Loader({ loading }) {
       transparent={true}
       animationType={'none'}
       visible={loading}
-      onRequestClose={() => console.log('modal close')}
+      onRequestClose={() => {}}
     >
       <View style={styles.modalBackground}>
         <View style={styles.activityIndicatorWrapper}>

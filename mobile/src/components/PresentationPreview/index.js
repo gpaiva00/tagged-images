@@ -4,7 +4,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import styles from  './styles';
 
-export default function PresentationPreview({ totalImages, isCreatingPresentation }) {
+export default function PresentationPreview({ 
+  totalImages, isCreatingPresentation, handleSavePresentation
+}) {
 
   function renderContent() {
     if (totalImages === 0)
@@ -20,7 +22,7 @@ export default function PresentationPreview({ totalImages, isCreatingPresentatio
         
         <TouchableOpacity
           style={styles.savePresentationButton}
-          onPress={() => {}}
+          onPress={handleSavePresentation}
         >
           <MaterialIcons name='save' size={28} style={styles.saveIcon}></MaterialIcons>
         </TouchableOpacity>

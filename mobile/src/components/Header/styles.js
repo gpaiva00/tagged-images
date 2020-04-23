@@ -6,7 +6,7 @@ export default StyleSheet.create({
     // position: 'absolute',
     // top: 0,
     // width: '100%',
-    paddingTop: Constants.statusBarHeight - 10,
+    paddingTop: Constants.statusBarHeight + 10,
     backgroundColor: '#7159c1',
     flexDirection: 'row',
     justifyContent: 'space-between',

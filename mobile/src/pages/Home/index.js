@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StatusBar } from 'react-native';
+import { createDownloadResumable, documentDirectory } from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 
 import Header from '../../components/Header';
 import ChipList from '../../components/ChipList';
@@ -54,6 +56,12 @@ export default function Home() {
     setTags(response.data);
   }
 
+  async function uploadSelectedImages(images) {
+    const response = await api.post('presentation', { images });
+
+    return response;
+  }
+
   function handleTagPress(text) {
     let newTagsFilter = JSON.parse(JSON.stringify(tagsFilter));
     let newTagsState = [...tags]; 
@@ -92,11 +100,12 @@ export default function Home() {
     // console.log({ image });
     let newSelectedImages = [...selectedImages];
     let newImages = [...images];
+    const { _id: imageId, image: { image: { url: imageUrl } } } = image;
 
     /**
      * Set prop 'selected' to images array
      */
-    const imageIndex = newImages.findIndex(img => img._id === image._id);
+    const imageIndex = newImages.findIndex(img => img._id === imageId);
     const { selected = false } = newImages[imageIndex];
 
     newImages[imageIndex] = {
@@ -108,14 +117,19 @@ export default function Home() {
      * Toggle selected images array
      */
     const selectedImageIndex = newSelectedImages.findIndex(selectedImage => 
-      selectedImage._id === image._id);
+      selectedImage._id === imageId);
     
-    if (selectedImageIndex === -1) newSelectedImages = [...newSelectedImages, image];
-    else newSelectedImages.splice(selectedImageIndex, 1); 
+    if (selectedImageIndex === -1) {
+      newSelectedImages = [
+        ...newSelectedImages,
+        {
+          _id: imageId,
+          url: imageUrl
+        }
+      ];
+    } else newSelectedImages.splice(selectedImageIndex, 1); 
 
     const total = newSelectedImages.length
-
-    console.log(total);
     
     setSelectedImages(newSelectedImages);
     setImages(newImages);
@@ -138,6 +152,44 @@ export default function Home() {
     setSelectedImages([]);
     setSelectedImagesTotal(0);
     setIsCreatingPresentation(false);
+  }
+
+  async function handleSavePresentation() {
+    try {
+      setLoading(true);
+      
+      const { data: fileName } = await uploadSelectedImages(selectedImages);
+      const apiUrl = 'http://10.0.0.109:3333';
+      
+      const fileUri = documentDirectory + fileName;
+      const url = `${apiUrl}/download/${fileName}`;
+      
+      let downloadObject = createDownloadResumable(
+        url,
+        fileUri
+      );
+      
+      let { status, uri } = await downloadObject.downloadAsync();
+      
+      if (status === 200) {
+        handleCancelPresentation();
+        shareDownloadFile(uri);
+      }
+      
+      setLoading(false);
+    } catch(err) {
+      console.error('failed to download', err);
+      setLoading(false);
+    } 
+  }
+
+  async function shareDownloadFile(uri) {
+    const isShareAvailable = await Sharing.isAvailableAsync();
+
+    if (isShareAvailable) {
+      return Sharing.shareAsync(uri);
+    }
+    
   }
 
   useEffect(() => {
@@ -170,7 +222,8 @@ export default function Home() {
 
         <PresentationPreview 
           totalImages={selectedImagesTotal}
-          isCreatingPresentation={isCreatingPresentation}/>
+          isCreatingPresentation={isCreatingPresentation}
+          handleSavePresentation={handleSavePresentation}/>
       </View>
     </>
   );

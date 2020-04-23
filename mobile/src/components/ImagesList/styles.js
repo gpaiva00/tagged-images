@@ -27,7 +27,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // color: '#2fc247'
-    color: '#000'
+    color: '#fff'
   },
 
   selected: {},
