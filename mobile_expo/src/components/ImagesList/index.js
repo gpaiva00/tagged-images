@@ -35,7 +35,7 @@ export default function ImagesList({
       onEndReached={loadImages}
       onEndReachedThreshold={0.2}
       windowSize={5}
-      renderItem={({ item: image, index }) => (
+      renderItem={({ item: image }) => (
         <>
           <TouchableWithoutFeedback
             onPress={() => handleImagePress({ image })}

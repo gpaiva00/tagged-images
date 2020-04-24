@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StatusBar } from 'react-native';
-import { createDownloadResumable, documentDirectory } from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
 
 import Header from '../../components/Header';
 import ChipList from '../../components/ChipList';
@@ -15,7 +13,6 @@ import styles from './styles';
 
 export default function Home() {
   const [images, setImages] = useState([]);
-  const [tags, setTags] = useState([]);
   const [tagsFilter, setTagsFilter] = useState('');
   const [total, setTotal] = useState(0);
   const [selectedImagesTotal, setSelectedImagesTotal] = useState(0);
@@ -51,44 +48,8 @@ export default function Home() {
     setLoading(false);
   }
 
-  async function loadTags() {
-    const response = await api.get('tags');
-
-    setTags(response.data);
-  }
-
-  async function uploadSelectedImages(images) {
-    const response = await api.post('presentation', { images });
-
-    return response;
-  }
-
-  function handleTagPress(text) {
-    let newTagsFilter = JSON.parse(JSON.stringify(tagsFilter));
-    let newTagsState = [...tags]; 
-    
-    // turns into array of tags
-    newTagsFilter = newTagsFilter.split(',');
-    
-    const tagFilterIndex = newTagsFilter.findIndex(tag => tag === text);
-    const tagIndex = newTagsState.findIndex(tag => tag.text === text);
-    const { active = false } = newTagsState[tagIndex];
-    
-    // toggle color prop
-    newTagsState[tagIndex] = { 
-      ...tags[tagIndex], 
-      active: !active
-    };
-    
-    // toggle tag on array
-    if (tagFilterIndex === -1) newTagsFilter = [...newTagsFilter, text]
-    else newTagsFilter.splice(tagFilterIndex, 1);
-    
-    // remove empty tags
-    newTagsFilter = newTagsFilter.filter(tag => tag !== '');
-    
-    setTagsFilter(newTagsFilter.join(','));
-    setTags(newTagsState);
+  function filterImages(tagsFilter) {
+    setTagsFilter(tagsFilter.join(','));
     setTotal(0);
     setIsFiltering(true);
     setPage(1);
@@ -98,7 +59,6 @@ export default function Home() {
   function handleImagePress({ image }) {
     if (!isCreatingPresentation) return;
 
-    // console.log({ image });
     let newSelectedImages = [...selectedImages];
     let newImages = [...images];
     const { _id: imageId, image: { image: { url: imageUrl } } } = image;
@@ -155,45 +115,6 @@ export default function Home() {
     setIsCreatingPresentation(false);
   }
 
-  async function handleSavePresentation() {
-    try {
-      setLoading(true);
-      
-      const { data: fileName } = await uploadSelectedImages(selectedImages);
-      // const apiUrl = 'http://10.0.0.109:3333';
-      const apiUrl = 'https://tagged-images.herokuapp.com';
-      
-      const fileUri = documentDirectory + fileName;
-      const url = `${apiUrl}/download/${fileName}`;
-      
-      let downloadObject = createDownloadResumable(
-        url,
-        fileUri
-      );
-      
-      let { status, uri } = await downloadObject.downloadAsync();
-      
-      if (status === 200) {
-        handleCancelPresentation();
-        shareDownloadFile(uri);
-      }
-      
-      setLoading(false);
-    } catch(err) {
-      console.error('failed to download', err);
-      setLoading(false);
-    } 
-  }
-
-  async function shareDownloadFile(uri) {
-    const isShareAvailable = await Sharing.isAvailableAsync();
-
-    if (isShareAvailable) {
-      return Sharing.shareAsync(uri);
-    }
-    
-  }
-
   function reCheckSelectedImages(images) {
     const newImages = images.map(image => {
       const imageIndex = selectedImages.findIndex(selectedImage =>
@@ -214,10 +135,6 @@ export default function Home() {
     loadImages();
   }, [tagsFilter]);
 
-  useEffect(() => {
-    loadTags();
-  }, []);
-
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
@@ -230,7 +147,7 @@ export default function Home() {
       <View style={styles.container}>
         <Loader loading={loading} />
         
-        <ChipList tags={tags} handleTagPress={handleTagPress}/>
+        <ChipList filterImages={filterImages} tagsFilter={tagsFilter} />
         
         <ImagesList
           images={images}
@@ -239,10 +156,12 @@ export default function Home() {
           handleImagePress={handleImagePress}
         />
 
-        <PresentationPreview 
+        <PresentationPreview
+          selectedImages={selectedImages}
           totalImages={selectedImagesTotal}
           isCreatingPresentation={isCreatingPresentation}
-          handleSavePresentation={handleSavePresentation}/>
+          handleCancelPresentation={handleCancelPresentation}
+          setLoading={setLoading}/>
       </View>
     </>
   );
