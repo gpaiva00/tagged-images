@@ -1,12 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 export default StyleSheet.create({
   header: {
-    // position: 'absolute',
-    // top: 0,
-    // width: '100%',
-    paddingTop: Constants.statusBarHeight + 10,
+    paddingTop: Platform.select({
+      ios: Constants.statusBarHeight + 10,
+      android: 0
+    }),
     backgroundColor: '#7159c1',
     flexDirection: 'row',
     justifyContent: 'space-between',

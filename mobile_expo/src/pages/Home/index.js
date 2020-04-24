@@ -32,20 +32,21 @@ export default function Home() {
 
     setLoading(true);
 
-    const response = await api.get('images', {
+    const { data, headers } = await api.get('images', {
       params: { page, tags: tagsFilter }
     });
     
 
     let imagesResult = images;
+    let imagesResponse = reCheckSelectedImages(data);
 
     if (isFiltering) {
       imagesResult = [];
       setIsFiltering(false);
     }
 
-    setImages([...imagesResult,...response.data]);
-    setTotal(Number(response.headers['x-total-count']));
+    setImages([...imagesResult,...imagesResponse]);
+    setTotal(Number(headers['x-total-count']));
     setPage(page + 1);
     setLoading(false);
   }
@@ -191,6 +192,22 @@ export default function Home() {
       return Sharing.shareAsync(uri);
     }
     
+  }
+
+  function reCheckSelectedImages(images) {
+    const newImages = images.map(image => {
+      const imageIndex = selectedImages.findIndex(selectedImage =>
+        selectedImage._id === image._id) 
+      const isSelected = imageIndex !== -1;
+      
+      if (isSelected) {
+        image.selected = true;
+      }
+
+      return image;
+    });
+  
+    return newImages;
   }
 
   useEffect(() => {
