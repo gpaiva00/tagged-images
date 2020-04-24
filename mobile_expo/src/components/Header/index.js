@@ -5,8 +5,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
 
 export default function Default({ 
-  isCreatingPresentation, handleCreatePresentation, handleCancelPresentation 
+  isCreatingPresentation, handleCancelPresentation, setIsCreatingPresentation
 }) {
+
+  function handleCreatePresentation() {
+    setIsCreatingPresentation(true);
+  }
 
   function renderTogglePresentationButton() {
     if (!isCreatingPresentation) 

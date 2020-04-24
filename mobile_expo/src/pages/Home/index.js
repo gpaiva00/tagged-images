@@ -56,51 +56,6 @@ export default function Home() {
     setLoading(false);
   }
 
-  function handleImagePress({ image }) {
-    if (!isCreatingPresentation) return;
-
-    let newSelectedImages = [...selectedImages];
-    let newImages = [...images];
-    const { _id: imageId, image: { image: { url: imageUrl } } } = image;
-
-    /**
-     * Set prop 'selected' to images array
-     */
-    const imageIndex = newImages.findIndex(img => img._id === imageId);
-    const { selected = false } = newImages[imageIndex];
-
-    newImages[imageIndex] = {
-      ...images[imageIndex],
-      selected: !selected
-    }
-    
-    /**
-     * Toggle selected images array
-     */
-    const selectedImageIndex = newSelectedImages.findIndex(selectedImage => 
-      selectedImage._id === imageId);
-    
-    if (selectedImageIndex === -1) {
-      newSelectedImages = [
-        ...newSelectedImages,
-        {
-          _id: imageId,
-          url: imageUrl
-        }
-      ];
-    } else newSelectedImages.splice(selectedImageIndex, 1); 
-
-    const total = newSelectedImages.length
-    
-    setSelectedImages(newSelectedImages);
-    setImages(newImages);
-    setSelectedImagesTotal(total);
-  }
-
-  function handleCreatePresentation() {
-    setIsCreatingPresentation(true);
-  }
-
   function handleCancelPresentation() {
     // deselect images
     const newImages = images.map(image => {
@@ -141,7 +96,7 @@ export default function Home() {
 
       <Header 
         isCreatingPresentation={isCreatingPresentation}
-        handleCreatePresentation={handleCreatePresentation}
+        setIsCreatingPresentation={setIsCreatingPresentation}
         handleCancelPresentation={handleCancelPresentation}/>
     
       <View style={styles.container}>
@@ -153,7 +108,10 @@ export default function Home() {
           images={images}
           selectedImages={selectedImages}
           loadImages={loadImages}
-          handleImagePress={handleImagePress}
+          isCreatingPresentation={isCreatingPresentation}
+          setImages={setImages}
+          setSelectedImages={setSelectedImages}
+          setSelectedImagesTotal={setSelectedImagesTotal}
         />
 
         <PresentationPreview

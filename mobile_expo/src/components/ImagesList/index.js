@@ -3,9 +3,15 @@ import { FlatList, Text, View, Image, TouchableWithoutFeedback } from 'react-nat
 
 import styles from './styles';
 
-export default function ImagesList({ 
-  images, selectedImages, loadImages, handleImagePress
- }) {
+export default function ImagesList({
+  images, 
+  selectedImages, 
+  loadImages, 
+  setSelectedImages, 
+  setImages, 
+  setSelectedImagesTotal,
+  isCreatingPresentation
+}) {
 
   function renderCheck(number) {
     return (
@@ -27,8 +33,49 @@ export default function ImagesList({
     return imageIndex + 1;
   }
 
+  function handleImagePress({ image }) {
+    if (!isCreatingPresentation) return;
+
+    let newSelectedImages = [...selectedImages];
+    let newImages = [...images];
+    const { _id: imageId, image: { image: { url: imageUrl } } } = image;
+
+    /**
+     * Set prop 'selected' to images array
+     */
+    const imageIndex = newImages.findIndex(img => img._id === imageId);
+    const { selected = false } = newImages[imageIndex];
+
+    newImages[imageIndex] = {
+      ...images[imageIndex],
+      selected: !selected
+    }
+
+    /**
+     * Toggle selected images array
+     */
+    const selectedImageIndex = newSelectedImages.findIndex(selectedImage =>
+      selectedImage._id === imageId);
+
+    if (selectedImageIndex === -1) {
+      newSelectedImages = [
+        ...newSelectedImages,
+        {
+          _id: imageId,
+          url: imageUrl
+        }
+      ];
+    } else newSelectedImages.splice(selectedImageIndex, 1);
+
+    const total = newSelectedImages.length
+
+    setSelectedImages(newSelectedImages);
+    setImages(newImages);
+    setSelectedImagesTotal(total);
+  }
+
   return (
-    <FlatList 
+    <FlatList
       data={images}
       keyExtractor={(item) => String(item._id)}
       showsHorizontalScrollIndicator={false}
@@ -46,7 +93,7 @@ export default function ImagesList({
               resizeMode='stretch'
             />
           </TouchableWithoutFeedback>
-          
+
           {image.selected && renderCheck(getSelectedImageIndex(image._id))}
         </>
       )}

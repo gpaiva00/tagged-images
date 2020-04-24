@@ -58,6 +58,7 @@ export default function PresentationPreview({
       );
       
       let { status, uri } = await downloadObject.downloadAsync();
+      console.log('SAVING');
       
       if (status === 200) {
         handleCancelPresentation();
@@ -73,6 +74,8 @@ export default function PresentationPreview({
 
   async function shareDownloadFile(uri) {
     const isShareAvailable = await Sharing.isAvailableAsync();
+    console.log({ isShareAvailable });
+    
 
     if (isShareAvailable) return Sharing.shareAsync(uri);
   }
