@@ -4,8 +4,8 @@ import Constants from 'expo-constants';
 export default StyleSheet.create({
   header: {
     paddingTop: Platform.select({
-      ios: Constants.statusBarHeight + 10,
-      android: 0
+      ios: Constants.statusBarHeight + 15,
+      android: 15
     }),
     backgroundColor: '#7159c1',
     flexDirection: 'row',

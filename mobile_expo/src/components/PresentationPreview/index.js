@@ -18,7 +18,7 @@ export default function PresentationPreview({
     
     return (
       <View style={styles.previewContainer}>
-        <Text>{totalImages} imagens</Text>
+        <Text>{totalImages} {totalImages > 1 ? 'imagens' : 'imagem'}</Text>
         
         <TouchableOpacity
           style={styles.savePresentationButton}
