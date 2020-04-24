@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, StatusBar, Platform } from 'react-native';
+import { View, StatusBar, Platform, Alert } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
+const { dirs: DIRS, unlink } = RNFetchBlob.fs;
 import Share from 'react-native-share';
 
 import Header from '../../components/Header';
@@ -159,66 +160,51 @@ export default function Home() {
       setLoading(true);
       
       const { data: fileName } = await uploadSelectedImages(selectedImages);
-      const apiUrl = 'http://10.0.0.109:3333';
-      // const apiUrl = 'https://tagged-images.herokuapp.com';
-      
-      const url = `${apiUrl}/download/${fileName}`;
+      // const apiUrl = 'http://10.0.0.109:3333';
+      const apiUrl = 'https://tagged-images.herokuapp.com';
+      const fetchUrl = `${apiUrl}/download/${fileName}`;
 
-      const { path, respInfo: { status } } = await RNFetchBlob
+
+      await RNFetchBlob
         .config({
           fileCache: true,
+          path: DIRS.DocumentDir + 'Apresentação.pptx'
         })
-        .fetch('GET', url);
-        
-      // console.log({ status, url: path() });
-      
-      if (status === 200) {
-        handleCancelPresentation();
-        shareDownloadFile(path);
-      }
+        .fetch('GET', fetchUrl)
+        .then(shareDownloadFile)
+        .then(handleCancelPresentation);        
       
       setLoading(false);
     } catch(err) {
-      console.error('failed to download', err);
+      Alert.alert('Download', 'Desculpe, houve um erro ao tentar baixar o arquivo.')
+      // console.error('failed to download', err);
       setLoading(false);
     } 
   }
 
-  function shareDownloadFile(path) {
-    const title = 'Tagged Images Presentation';
-    const url = path();
+  async function shareDownloadFile({ path, respInfo: { headers }}) {
 
-    // console.log('url', url);
-    
+    const filePath = Platform.OS === 'android' ? 'file://' + path() : path();
+    const type = headers['Content-Type'];
 
-    const options = Platform.select({
-      ios: {
-        activityItemSources: [
-          { // For sharing url with custom title.
-            placeholderItem: { type: 'url', content: url },
-            item: {
-              default: { type: 'url', content: url },
-            },
-            subject: {
-              default: title,
-            },
-            linkMetadata: { originalUrl: url, url, title },
-          },
-        ],
-      },
-      default: {
-        title,
-        subject: title,
-      },
-    });
+    // console.log({ type, filePath });
 
-    Share.open({
-      url,
-      title,
-      subject: title,
-    })
-    .then((res) => { console.log(res) })
-    .catch((err) => { err && console.log(err); }); 
+    let options = {
+      type,
+      url: filePath
+    };
+
+    try {
+      await Share.open(options);
+      
+      // remove the image or pdf from device's storage
+      await unlink(filePath);
+    } catch(err) {
+      // console.log(err.message);
+      
+      if (err.message === 'User did not share')
+        Alert.alert('Compartilhar', 'Compartilhamento cancelado.');
+    }
   }
 
   useEffect(() => {
@@ -231,9 +217,7 @@ export default function Home() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#7159c1" />
-      
-      {/* <SafeAreaView> */}
+      <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
 
         <Header 
           isCreatingPresentation={isCreatingPresentation}
@@ -258,8 +242,6 @@ export default function Home() {
             handleSavePresentation={handleSavePresentation}
           />
         </View>
-      {/* </SafeAreaView> */}
-      
     
     </>
   );
