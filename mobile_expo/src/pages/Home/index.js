@@ -233,7 +233,8 @@ export default function Home() {
         <ChipList tags={tags} handleTagPress={handleTagPress}/>
         
         <ImagesList
-          images={images} 
+          images={images}
+          selectedImages={selectedImages}
           loadImages={loadImages}
           handleImagePress={handleImagePress}
         />

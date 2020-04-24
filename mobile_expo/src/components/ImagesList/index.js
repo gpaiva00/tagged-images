@@ -4,16 +4,30 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import styles from './styles';
 
-export default function ImagesList({ images, loadImages, handleImagePress }) {
-  function renderCheck() {
+export default function ImagesList({ 
+  images, selectedImages, loadImages, handleImagePress
+ }) {
+
+  function renderCheck(number) {
     return (
-      <MaterialIcons
-        name='check-circle'
-        size={35}
-        style={styles.checkIcon}
-      ></MaterialIcons>
+      // <MaterialIcons
+      //   name='check-circle'
+      //   size={35}
+      //   style={styles.checkIcon}
+      // >
+      // </MaterialIcons>
+      <View style={styles.checkView}>
+        <Text style={styles.checkText}>{number}</Text>
+      </View>
     );
   }
+
+  function getSelectedImageIndex(imageId) {
+    const imageIndex = selectedImages.findIndex(image => image._id === imageId);
+
+    return imageIndex + 1;
+  }
+
   return (
     <FlatList 
       data={images}
@@ -34,7 +48,7 @@ export default function ImagesList({ images, loadImages, handleImagePress }) {
             />
           </TouchableWithoutFeedback>
           
-          {image.selected && renderCheck()}
+          {image.selected && renderCheck(getSelectedImageIndex(image._id))}
         </>
       )}
       ListEmptyComponent={

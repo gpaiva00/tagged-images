@@ -20,14 +20,22 @@ export default StyleSheet.create({
     height: imageHeight,
   },
 
-  checkIcon: {
+  checkView: {
     position: 'absolute',
     top: 10,
     right: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    // color: '#2fc247'
-    color: '#fff'
+    backgroundColor: '#2fc247',
+    height: 30,
+    width: 30,
+    borderRadius: 50
+    // color: '#fff'
+  },
+
+  checkText: {
+    fontSize: 15,
+    fontWeight: "bold"
   },
 
   selected: {},
