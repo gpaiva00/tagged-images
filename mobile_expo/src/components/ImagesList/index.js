@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 
 import styles from './styles';
 
