@@ -1,19 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, FlatList } from 'react-native';
-
-import api  from '../../services/api';
+import React from 'react';
+import { View, Text, FlatList } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import styles from './styles';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function ChipList({ tagsFilter, filterImages }) {
-  const [tags, setTags] = useState([]);
-
-  async function loadTags() {
-    const response = await api.get('tags');
-
-    setTags(response.data);
-  }
-
+export default function ChipList({ selectedTags, filterImages, handleRemoveTag }) {
+  
   function handleTagPress(text) {
     let newTagsFilter = JSON.parse(JSON.stringify(tagsFilter));
     let newTagsState = [...tags]; 
@@ -42,28 +35,35 @@ export default function ChipList({ tagsFilter, filterImages }) {
     filterImages(newTagsFilter);
   }
 
-  useEffect(() => {
-    loadTags();
-  }, []);
+  if(!selectedTags.length) return <></>
+  else
+    return (
+      <View style={styles.chipsList}>
+        <FlatList
+          data={selectedTags}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => String(item._id)}
+          renderItem={({ item: tag, index }) => (
+            <View
+              style={styles.chip}
+              underlayColor='#7159c1'
+            >
+              
+              <Text style={[ styles.chipText, tag.active && styles.activeChipText ]}>
+                {tag.text}
+              </Text>
 
+              <TouchableOpacity
+                onPress={() => handleRemoveTag(index, tag._id)}
+                style={{ paddingStart: 10 }}
+              >
+                <MaterialIcons name='cancel' size={15} style={{ color: '#fff' }}>
+                </MaterialIcons>
+              </TouchableOpacity>
 
-  return (
-    <View style={styles.chipsList}>
-      <FlatList
-        data={tags}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => String(item._id)}
-        renderItem={({ item: tag }) => (
-          <TouchableHighlight
-            style={[ styles.chip, tag.active && styles.activeChip ]}
-            underlayColor='#7159c1'
-            onPress={() => handleTagPress(tag.text)}>
-            <Text style={[ styles.chipText, tag.active && styles.activeChipText ]}>
-              {tag.text}
-            </Text>
-          </TouchableHighlight>
-        )} />
-    </View>
-  );
+            </View>
+          )} />
+      </View>
+    );
 }

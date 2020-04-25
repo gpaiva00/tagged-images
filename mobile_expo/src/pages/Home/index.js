@@ -11,7 +11,7 @@ import api  from '../../services/api';
 
 import styles from './styles';
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [images, setImages] = useState([]);
   const [tagsFilter, setTagsFilter] = useState('');
   const [total, setTotal] = useState(0);
@@ -86,6 +86,10 @@ export default function Home() {
     return newImages;
   }
 
+  function navigateToSearch() {
+    navigation.navigate('Search');
+  }
+
   useEffect(() => {
     loadImages();
   }, [tagsFilter]);
@@ -97,12 +101,13 @@ export default function Home() {
       <Header 
         isCreatingPresentation={isCreatingPresentation}
         setIsCreatingPresentation={setIsCreatingPresentation}
-        handleCancelPresentation={handleCancelPresentation}/>
+        handleCancelPresentation={handleCancelPresentation}
+        navigateToSearch={navigateToSearch}/>
     
       <View style={styles.container}>
         <Loader loading={loading} />
         
-        <ChipList filterImages={filterImages} tagsFilter={tagsFilter} />
+        {/* <ChipList filterImages={filterImages} tagsFilter={tagsFilter} /> */}
         
         <ImagesList
           images={images}

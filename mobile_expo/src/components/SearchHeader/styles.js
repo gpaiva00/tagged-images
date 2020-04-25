@@ -14,34 +14,26 @@ export default StyleSheet.create({
     paddingBottom: 15,
   },
 
-  headerPageContent: {
-    flexDirection: 'row',
+  searchInputText: {
+    backgroundColor: '#fff',
+    height: 30, 
+    borderRadius: 5,
+    width: '74%',
+    paddingStart: 8,
+    borderColor: '#fff',
+    borderWidth: 1
   },
 
   headerIcons: {
     color: '#fff',
   },
 
-  cancelIcon: {
-    color: '#f76554'
-  },
-
   headerPageIcon: {
-    marginStart: 10,
+    marginStart: 5,
   },
 
   headerButtons: {
-    // paddingHorizontal: 10,
-    paddingEnd: 10,
+    marginEnd: 8,
   },
 
-  headerOptionsContent: {
-    flexDirection: "row"
-  },
-
-  headerTitle: {
-    color: '#fff', 
-    fontSize: 20,
-    marginHorizontal: 10,
-  },
 });

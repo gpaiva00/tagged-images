@@ -5,7 +5,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
 
 export default function Default({ 
-  isCreatingPresentation, handleCancelPresentation, setIsCreatingPresentation
+  isCreatingPresentation, 
+  handleCancelPresentation, 
+  setIsCreatingPresentation,
+  navigateToSearch
 }) {
 
   function handleCreatePresentation() {
@@ -46,6 +49,13 @@ export default function Default({
       </View>
       
       <View style={styles.headerOptionsContent}>
+        <TouchableOpacity
+          onPress={navigateToSearch}
+          style={styles.headerButtons}
+        >
+          <MaterialIcons name='search' size={28} style={styles.headerIcons}></MaterialIcons>
+        </TouchableOpacity>
+
         {renderTogglePresentationButton()}
       </View>
     </View>

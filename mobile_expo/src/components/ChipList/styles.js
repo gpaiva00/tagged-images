@@ -8,22 +8,20 @@ export default StyleSheet.create({
   },
 
   chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
-    backgroundColor: '#dbdbdb',
+    backgroundColor: '#7159c1',
     borderRadius: 50,
     marginHorizontal: 5,
   },
 
-  activeChip: {
-    backgroundColor: '#7159c1',
-  },
-
   chipText: {
-    color: '#636262',
+    color: '#fff',
     fontSize: 12,
+    fontWeight: 'bold',
   },
 
-  activeChipText: {
-    color: '#fff',
-  },
+
+
 });
