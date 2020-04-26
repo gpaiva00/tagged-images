@@ -86,7 +86,6 @@ export default function Search({ navigation }) {
   }
 
   function handleSubmitSearch() {
-    
   }
 
   useEffect(() => {
@@ -99,7 +98,7 @@ export default function Search({ navigation }) {
 
       <SearchHeader 
         handleSearch={handleSearch}
-        handleNavigateBack={() => navigation.goBack()}
+        handleNavigateBack={() => navigation.navigate('Home')}
         handleSubmitSearch={handleSubmitSearch}/>
       
       <View styles={styles.container}>
