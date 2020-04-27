@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StatusBar, FlatList, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -8,11 +8,12 @@ import ChipList from '../../components/ChipList';
 import api  from '../../services/api';
 
 import styles from './styles';
+import { TagsContext } from '../../../TagsContext';
 
 export default function Search({ navigation }) {
   const [tags, setTags] = useState([]);
   const [filteredTags, setFilteredTags] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useContext(TagsContext);  
 
   async function loadTags() {
     const response = await api.get('tags');
@@ -22,7 +23,7 @@ export default function Search({ navigation }) {
   }
 
   function handleSelectTag(tag) {
-    const { _id: selectedTagId, text } = tag;
+    const { _id: selectedTagId } = tag;
     
     const newTags = tags.map(originalTag => {
       if (originalTag._id === selectedTagId) originalTag.hide = true
@@ -30,7 +31,8 @@ export default function Search({ navigation }) {
       return originalTag;
     });
 
-    setSelectedTags([...selectedTags, tag]);
+    setSelectedTags(selectedTags => ([...selectedTags, tag]));
+    
     setTags(newTags);
   }
 
@@ -86,6 +88,7 @@ export default function Search({ navigation }) {
   }
 
   function handleSubmitSearch() {
+    navigation.navigate('Home');
   }
 
   useEffect(() => {

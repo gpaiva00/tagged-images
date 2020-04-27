@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, StatusBar } from 'react-native';
 
 import Header from '../../components/Header';
@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 import api  from '../../services/api';
 
 import styles from './styles';
+import { TagsContext } from '../../../TagsContext';
 
 export default function Home({ navigation }) {
   const [images, setImages] = useState([]);
@@ -21,6 +22,8 @@ export default function Home({ navigation }) {
   const [isFiltering, setIsFiltering] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isCreatingPresentation, setIsCreatingPresentation] = useState(false);
+  const [selectedTags, setSelectedTags] = useContext(TagsContext);
+  
 
   async function loadImages() {
     if (loading) return;
@@ -33,7 +36,6 @@ export default function Home({ navigation }) {
       params: { page, tags: tagsFilter }
     });
     
-
     let imagesResult = images;
     let imagesResponse = reCheckSelectedImages(data);
 
@@ -49,7 +51,11 @@ export default function Home({ navigation }) {
   }
 
   function filterImages(tagsFilter) {
-    setTagsFilter(tagsFilter.join(','));
+    let newSelectedTags = []
+
+    if (tagsFilter.length) newSelectedTags = tagsFilter.map(tag => tag.text);
+    
+    setTagsFilter(newSelectedTags.join(','));
     setTotal(0);
     setIsFiltering(true);
     setPage(1);
@@ -86,13 +92,20 @@ export default function Home({ navigation }) {
     return newImages;
   }
 
-  function navigateToSearch() {
-    navigation.navigate('Search');
+  function handleRemoveTag(selectedTagIndex) {
+    const newSelectedTags = [...selectedTags];
+    newSelectedTags.splice(selectedTagIndex, 1);
+    
+    setSelectedTags(newSelectedTags);
   }
 
   useEffect(() => {
     loadImages();
   }, [tagsFilter]);
+
+  useEffect(() => {
+    filterImages(selectedTags);
+  }, [selectedTags]);
 
   return (
     <>
@@ -102,12 +115,12 @@ export default function Home({ navigation }) {
         isCreatingPresentation={isCreatingPresentation}
         setIsCreatingPresentation={setIsCreatingPresentation}
         handleCancelPresentation={handleCancelPresentation}
-        navigateToSearch={navigateToSearch}/>
+        navigateToSearch={() => navigation.navigate('Search')}/>
     
       <View style={styles.container}>
         <Loader loading={loading} />
         
-        {/* <ChipList filterImages={filterImages} tagsFilter={tagsFilter} /> */}
+        <ChipList selectedTags={selectedTags} handleRemoveTag={handleRemoveTag} />
         
         <ImagesList
           images={images}
