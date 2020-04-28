@@ -31,8 +31,8 @@ export default StyleSheet.create({
   },
 
   headerButtons: {
-    // paddingHorizontal: 10,
-    paddingEnd: 10,
+    paddingHorizontal: 10,
+    // paddingStart: 15,
   },
 
   headerOptionsContent: {

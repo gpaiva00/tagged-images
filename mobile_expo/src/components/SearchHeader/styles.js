@@ -36,4 +36,10 @@ export default StyleSheet.create({
     marginEnd: 8,
   },
 
+  checkButton: {
+    color: '#32a852',
+    // backgroundColor: '#fff', 
+    // borderRadius: 100,
+  },
+
 });

@@ -37,7 +37,11 @@ export default function Default({
           onPress={handleSubmitSearch}
           style={styles.headerButtons}
         >
-          <MaterialIcons name='check' size={28} style={styles.headerIcons}></MaterialIcons>
+          <MaterialIcons 
+            name='check-circle' 
+            size={30} 
+            style={[styles.headerIcons, styles.checkButton]}>
+          </MaterialIcons>
         </TouchableOpacity>
       {/* </View> */}
     </View>
