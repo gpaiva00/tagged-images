@@ -11,8 +11,9 @@ import api  from '../../services/api';
 
 import styles from './styles';
 import { TagsContext } from '../../../TagsContext';
+import { ImagesContext } from '../../../ImagesContext';
 
-export default function Home({ navigation }) {
+export default function Home({ route, navigation }) {
   const [images, setImages] = useState([]);
   const [tagsFilter, setTagsFilter] = useState('');
   const [total, setTotal] = useState(0);
@@ -22,9 +23,10 @@ export default function Home({ navigation }) {
   const [isFiltering, setIsFiltering] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isCreatingPresentation, setIsCreatingPresentation] = useState(false);
+  const [applyFilter, setApplyFilter] = useContext(ImagesContext)
+  // tags context
   const [selectedTags, setSelectedTags] = useContext(TagsContext);
   
-
   async function loadImages() {
     if (loading) return;
 
@@ -51,13 +53,16 @@ export default function Home({ navigation }) {
   }
 
   function filterImages(tagsFilter) {
-    let newSelectedTags = []
+    if (!applyFilter) return;
+
+    let newSelectedTags = [];
 
     if (tagsFilter.length) newSelectedTags = tagsFilter.map(tag => tag.text);
     
     setTagsFilter(newSelectedTags.join(','));
     setTotal(0);
     setIsFiltering(true);
+    setApplyFilter(false);
     setPage(1);
     setLoading(false);
   }
@@ -97,6 +102,7 @@ export default function Home({ navigation }) {
     newSelectedTags.splice(selectedTagIndex, 1);
     
     setSelectedTags(newSelectedTags);
+    setApplyFilter(true);
   }
 
   useEffect(() => {
@@ -105,7 +111,7 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     filterImages(selectedTags);
-  }, [selectedTags]);
+  }, [applyFilter]);
 
   return (
     <>
@@ -120,7 +126,9 @@ export default function Home({ navigation }) {
       <View style={styles.container}>
         <Loader loading={loading} />
         
-        <ChipList selectedTags={selectedTags} handleRemoveTag={handleRemoveTag} />
+        <ChipList 
+          selectedTags={selectedTags} 
+          handleRemoveTag={handleRemoveTag} />
         
         <ImagesList
           images={images}

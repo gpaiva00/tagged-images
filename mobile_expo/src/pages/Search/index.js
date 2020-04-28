@@ -9,17 +9,23 @@ import api  from '../../services/api';
 
 import styles from './styles';
 import { TagsContext } from '../../../TagsContext';
+import { ImagesContext } from '../../../ImagesContext';
 
 export default function Search({ navigation }) {
-  const [tags, setTags] = useState([]);
   const [filteredTags, setFilteredTags] = useState([]);
-  const [selectedTags, setSelectedTags] = useContext(TagsContext);  
-
+  const [selectedTags, setSelectedTags, tags, setTags] = useContext(TagsContext);
+  const [applyFilter, setApplyFilter] = useContext(ImagesContext);
+  
   async function loadTags() {
-    const response = await api.get('tags');
+    let allTags = [];
 
-    setTags(response.data);
-    setFilteredTags(response.data);
+    // use tags from state
+    if (tags.length) allTags = tags;
+    // or fetch tags again
+    else allTags = await api.get('tags').then(res => res.data);
+    
+    setTags(allTags);
+    setFilteredTags(allTags);
   }
 
   function handleSelectTag(tag) {
@@ -32,7 +38,6 @@ export default function Search({ navigation }) {
     });
 
     setSelectedTags(selectedTags => ([...selectedTags, tag]));
-    
     setTags(newTags);
   }
 
@@ -88,6 +93,7 @@ export default function Search({ navigation }) {
   }
 
   function handleSubmitSearch() {
+    setApplyFilter(true);
     navigation.navigate('Home');
   }
 
@@ -106,7 +112,10 @@ export default function Search({ navigation }) {
       
       <View styles={styles.container}>
         {/* list of selected filters */}
-        <ChipList selectedTags={selectedTags} handleRemoveTag={handleRemoveTag} />
+        <ChipList 
+          selectedTags={selectedTags} 
+          handleRemoveTag={handleRemoveTag} 
+          showRemoveButton={true}/>
 
         <FlatList
           data={filteredTags}

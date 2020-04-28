@@ -1,24 +1,20 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { NavigationContainer } from '@react-navigation/native';
+
+import Routes from './src/routes';
 
 import { TagsProvider } from './TagsContext';
+import { ImagesProvider } from './ImagesContext';
 
-import Home from './src/pages/Home';
-import Search from './src/pages/Search';
-
-const mainNavigation = createSwitchNavigator({
-  Home,
-  Search
-})
-
-const AppContainer = createAppContainer(mainNavigation);
-
-function App() {
+export default function App() {
   return (
-      <TagsProvider>
-        <AppContainer />
-      </TagsProvider>
+    <NavigationContainer>
+      <ImagesProvider>
+        <TagsProvider>
+          <Routes />
+        </TagsProvider>
+      </ImagesProvider>
+    </NavigationContainer>
   );
 }
-
-export default App;

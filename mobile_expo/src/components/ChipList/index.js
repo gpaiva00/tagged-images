@@ -5,7 +5,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function ChipList({ selectedTags, filterImages, handleRemoveTag }) {
+export default function ChipList({ 
+  selectedTags, filterImages, handleRemoveTag, showRemoveButton = false
+}) {
   
   function handleTagPress(text) {
     let newTagsFilter = JSON.parse(JSON.stringify(tagsFilter));
@@ -54,14 +56,16 @@ export default function ChipList({ selectedTags, filterImages, handleRemoveTag }
                 {tag.text}
               </Text>
 
-              <TouchableOpacity
-                onPress={() => handleRemoveTag(index, tag._id)}
-                style={{ paddingStart: 10 }}
-              >
-                <MaterialIcons name='cancel' size={15} style={{ color: '#fff' }}>
-                </MaterialIcons>
-              </TouchableOpacity>
-
+              {showRemoveButton && (
+                <TouchableOpacity
+                  onPress={() => handleRemoveTag(index, tag._id)}
+                  style={{ paddingStart: 10 }}
+                >
+                  <MaterialIcons name='cancel' size={15} style={{ color: '#fff' }}>
+                  </MaterialIcons>
+                </TouchableOpacity>
+              )}
+              
             </View>
           )} />
       </View>

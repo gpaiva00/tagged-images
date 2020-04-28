@@ -1,24 +1,17 @@
-import React, { useReducer, useState } from "react";
+import React, { useState, createContext } from "react";
 
-// let reducer = (state, action) => {
-//   switch (action.type) {
-//     case "setSelectedTags":
-//       return { ...state, selectedTags: action.payload };
-//     default:
-//       return;
-//   }
-// };
-
-// const initialState = { selectedTags: [] }
-const initialState = [[], () => {}]
-const TagsContext = React.createContext(initialState);
+// const initialState = [{ selectedTags: [], test: [] }, () => {}]
+// define o formato do contexto
+const TagsContext = createContext(null);
 
 function TagsProvider(props) {
-  // const [state, dispatch] = useReducer(reducer, initialState);
+  const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
 
+  const providerValue = [selectedTags, setSelectedTags, tags, setTags];
+
   return (
-   <TagsContext.Provider value={[selectedTags, setSelectedTags]}>
+   <TagsContext.Provider value={providerValue}>
       {props.children}
     </TagsContext.Provider>
   );
