@@ -26,7 +26,7 @@
     },
     "android": {
       "package": "com.jwi.taggedImages",
-      "versionCode": 2.0
+      "versionCode": 2
     }
   }
 }
