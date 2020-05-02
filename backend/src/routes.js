@@ -3,12 +3,16 @@ const ImageController = require('./controllers/Image');
 const PresentationController = require('./controllers/Presentation');
 const UploadController = require('./controllers/Upload');
 const TagController = require('./controllers/Tag');
+const AuthController = require('./controllers/Auth');
 
 const routes = express.Router();
 
 routes.get('/', (req, res) => {
   return res.json({ message: 'Hello' });
 });
+
+// auth
+routes.get('/auth', AuthController.auth);
 
 // images
 routes.get('/images', ImageController.index);

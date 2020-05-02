@@ -4,6 +4,6 @@ const apiUrl = `${process.env.VUE_APP_JSON_API}/auth`;
 
 export default {
   async validateLogin({ username, password }) {
-    return axios.get(`${apiUrl}?q=username:${username},password:${password}`);
+    return axios.get(`${apiUrl}?username=${username}&password=${password}`);
   },
 };
